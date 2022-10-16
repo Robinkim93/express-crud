@@ -1,4 +1,5 @@
 const myDataSource = require("../util/dataSource");
+const { promisify } = require("util");
 
 const newPosts = async (title, content, userId) => {
   return await myDataSource.query(
@@ -36,4 +37,25 @@ const userGetAllPosts = async (userId) => {
   `);
 };
 
-module.exports = { newPosts, getAllPosts, userGetAllPosts };
+const postsModify = async (userId, postingId, content) => {
+  console.log(userId, postingId);
+  await myDataSource.query(`
+  UPDATE posts SET content="${content}" WHERE user_id=${userId} AND id=${postingId}
+  `);
+
+  const data = await myDataSource.query(`
+  SELECT
+    u.id as userId,
+    u.name as userName,
+    p.id as postingId,
+    p.title as postingTitle,
+    p.content as postingContent
+  FROM users as u
+  INNER JOIN posts as p ON p.user_id = u.id
+  WHERE u.id=${userId} AND p.id=${postingId}
+  `);
+
+  return data;
+};
+
+module.exports = { newPosts, getAllPosts, userGetAllPosts, postsModify };

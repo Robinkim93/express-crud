@@ -28,4 +28,9 @@ const getUserAllPosts = async (userId) => {
 
   return result;
 };
-module.exports = { newPosts, getAllPosts, getUserAllPosts };
+
+const postsModify = (userId, postingId, content) => {
+  return postsDao.postsModify(userId, postingId, content);
+};
+
+module.exports = { newPosts, getAllPosts, getUserAllPosts, postsModify };

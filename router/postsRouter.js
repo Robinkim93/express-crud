@@ -6,5 +6,6 @@ const router = express.Router();
 router.post("/newposts", postsController.newPosts);
 router.get("/all", postsController.getAllPosts);
 router.get("/:userId", postsController.getUserAllPosts);
+router.patch("", postsController.postsModify);
 
 module.exports = { router };
